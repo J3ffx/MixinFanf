@@ -1,0 +1,39 @@
+grammar org.xtext.mixin.fanfan.Mixfanf with org.eclipse.xtext.common.Terminals
+
+generate mixfanf "http://www.xtext.org/mixin/fanfan/Mixfanf"
+
+Model:
+	lines+=Line*;
+
+Line:
+	line=('task' | 'do' |'dir') (directives+=Directive+ | task=Task) & ';';
+
+Directive:
+	instruction=Instruction & (',')?;
+
+Instruction:
+	 order=('go'|'stop'|'take'|'give'|'wait'|'filter') param=Param;
+
+Param:
+	(Cup | Milli | Time | Filter | Test);
+
+Test:
+	'if' Cup Comparator Milli;
+
+Cup:
+	'cup' INT;
+	
+Milli:
+	(INT 'ml'|'cl'|'dl'|'l') | 'all';
+	
+Time:
+	INT 's'|'m'|'h';
+	
+Filter:
+	'A'|'B'|'none';
+	
+Comparator:
+	'different' | 'less' | 'more';
+	
+Task:
+	name=ID (':' directives+=Directive+)?;
